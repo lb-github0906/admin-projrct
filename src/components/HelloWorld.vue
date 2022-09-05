@@ -1,10 +1,11 @@
 <template>
   <div>
-    主页显示
+    qqqqqqqq
   </div>
 </template>
 
 <script>
+  
 export default {
 
 }
