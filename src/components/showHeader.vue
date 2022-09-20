@@ -2,12 +2,12 @@
   <el-header>
     <div class="contain">
 			<div class="contain-item">
-					<el-button round  class="search-lan">语言切换</el-button>
+				<el-button round  class="search-lan">语言切换</el-button>
 			</div>
 			<div class="contain-item"><i class="el-icon-bell"></i></div>
 			<div class="contain-item">
 				<el-avatar style="margin-top:10px" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
-				<div>123456</div>
+				<!-- <div>123456</div> -->
 			</div>
 			<div class="contain-item">
 				<div class="detial">
@@ -28,9 +28,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
  .contain {
-	flex: 1;
+	// flex: 1;
+	width:98%20px;
  }
  .contain .contain-item{
 	float: right;

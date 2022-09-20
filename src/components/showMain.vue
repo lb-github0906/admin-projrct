@@ -1,133 +1,61 @@
 <template>
-  <div>
-		<el-main>
-			<div class="containnew" v-if="flag === true">
-				<!-- 销售 -->
-				<div class="card">
-					<div class="card-showpping">
-						<div class="all-show">总销售额</div>
-						<i class="el-icon-info"></i>
-					</div>
-					<div class="number">￥1,354,896,635.00</div><br/>
-					<div class="baifenbi">
-						<div>周同比 12%<i class="el-icon-sort-up"></i></div>
-						<div style="padding-left:20px"></div>
-						<div>日同比 12%<i class="el-icon-sort-down"></i></div>
-					</div><br/>
-					<div class="day-show">
-						日销售额 ￥42.546
-					</div>
-				</div>
-				<!-- 访问量 -->
-				<div class="card">
-					<div class="card-showpping">
-						<div class="all-show">访问量</div>
-						<i class="el-icon-info"></i>
-					</div>
-					<div class="number">￥1,354,896,635.00</div><br/>
-					<div class="baifenbi">
-						<div>周同比 12%<i class="el-icon-sort-up"></i></div>
-						<div style="padding-left:20px"></div>
-						<div>日同比 12%<i class="el-icon-sort-down"></i></div>
-					</div><br/>
-					<div class="day-show">
-						日销售额 ￥42.546
-					</div>
-				</div>
-				<!-- 支付笔数 -->
-				<div class="card">
-					<div class="card-showpping">
-						<div class="all-show">支付笔数</div>
-						<i class="el-icon-info"></i>
-					</div>
-					<div class="number">￥1,354,896,635.00</div><br/>
-					<div class="baifenbi">
-						<div>周同比 12%<i class="el-icon-sort-up"></i></div>
-						<div style="padding-left:20px"></div>
-						<div>日同比 12%<i class="el-icon-sort-down"></i></div>
-					</div><br/>
-					<div class="day-show">
-						日销售额 ￥42.546
-					</div>
-				</div>
-				<!-- 活动效果 -->
-				<div class="card">
-					<div class="card-showpping">
-						<div class="all-show">活动效果</div>
-						<i class="el-icon-info"></i>
-					</div>
-					<div class="number">￥1,354,896,635.00</div><br/>
-					<div class="baifenbi">
-						<div>周同比 12%<i class="el-icon-sort-up"></i></div>
-						<div style="padding-left:20px"></div>
-						<div>日同比 12%<i class="el-icon-sort-down"></i></div>
-					</div><br/>
-					<div class="day-show">
-						日销售额 ￥42.546
-					</div>
-				</div>
-			</div>
-			<div v-else>
-				<el-skeleton :rows="6" animated />
-			</div>
-		</el-main>
+	<div class="main-contian">
+		<div class="border-a"></div>
+		<div class="border-b"></div>
+		<div class="border-c"></div>
+		<div class="border-d"></div>
+		<div class="border-e"></div>
 	</div>
 </template>
 
 <script>
 export default {
-	data() {
-    return {
-      flag: true,
-    }
-  }
+
 }
 </script>
 
-<style>
-.containnew {
-	display: flex;
-	flex: 1;
-}
-.card{
-	width: 300px;
-	height: 170px;
-	padding-left: 15px;
-	padding-right: 15px;
-	margin-left: 21px;
-	background: #fff;
-}
-.card .card-showpping {
-	height: 20px;
-	display: flex;
-	margin-bottom: 10px;
-	justify-content: space-between;
-	padding: 10px 5px;
-}
-.card .card-showpping .all-show {
-	border-left:4px solid blue;
-	margin-right: 3px;
-	padding: 3px;
-	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-}
-.card .number {
-	float: left;
-	font-size: 20px;
-}
-.card .baifenbi {
-	padding-top: 30px;
-	padding-bottom: 20px;
-	display: flex;
-	flex: 1;
-	padding-right: 20px;
-	border-bottom: 1px solid #999;
-}
-.card .day-show {
-	float: left;
-	padding-top: 8px;
-	padding-bottom: 15px;
-}
-/deep/ .el-card__body, .el-main {
-	padding-left: 0;
-}
+<style lang="less" scoped>
+	.main-contian {
+		height: 100%;
+		width: 98%;
+		display: flex;
+		flex: 1;
+		justify-content: space-between;
+		background: #15bcff3d;
+		.border-a {
+			border: 1px solid #15bcff3d;
+			margin: 10px;
+			height: 180px;
+			width: 360px;
+			background: #690ce433;
+		}
+		.border-b {
+			border: 1px solid #15bcff3d;
+			margin: 10px;
+			height: 260px;
+			width: 760px;
+			background: #cb6d0f33;
+		}
+		.border-c {
+			border: 1px solid #15bcff3d;
+			margin: 10px;
+			height: 480px;
+			width: 860px;
+			background: #cb6d0f33;
+		}
+		.border-d {
+			border: 1px solid #15bcff3d;
+			margin: 10px;
+			height: 300px;
+			width: 660px;
+			background: #cb6d0f33;
+		}
+		.border-e {
+			border: 1px solid #15bcff3d;
+			margin: 10px;
+			height: 380px;
+			width: 660px;
+			background: #cb6d0f33;
+		}
+	}
 </style>

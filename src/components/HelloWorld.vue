@@ -5,7 +5,7 @@
       <el-container>
         <ShowHeader></ShowHeader>
         <ShowMain></ShowMain>
-        <el-footer>Footer</el-footer>
+        <el-footer style="height: 50px;">Footer</el-footer>
       </el-container>
     </el-container>
   </div>
@@ -14,7 +14,7 @@
 <script>
 import ShowAside from './showAside.vue'
 import ShowHeader from './showHeader.vue'
-import ShowMain from './ShowMain.vue'
+import ShowMain from '../components/showMain'
   
 export default {
   components: {
@@ -26,7 +26,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .el-header, .el-footer {
     background-color: #B3C0D1;
     color: #333;

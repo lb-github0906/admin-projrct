@@ -1,5 +1,5 @@
 <template>
-    <el-aside width="200px">
+    <el-aside width="200px" class="contain-aside">
         <div class="name">系统名称显示</div>
         <el-menu
           default-active="2"
@@ -73,7 +73,12 @@ export default {
 }
 </script>
 
-<style scope>
+<style lang="less" scoped>
+  .contain-aside{
+    max-height: 704px;
+    overflow: scroll;
+    min-height: calc(100vh - 40px);
+  }
   .name{
     text-align: center;
     height: 40px;
@@ -112,5 +117,7 @@ export default {
   .el-container:nth-child(7) .el-aside {
     line-height: 320px;
   }
-
+/deep/ .el-submenu .el-menu-item {
+  width: 0px;
+}
 </style>
