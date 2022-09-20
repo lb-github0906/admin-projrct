@@ -31,7 +31,8 @@ export default {
 <style lang="less" scoped>
  .contain {
 	// flex: 1;
-	width:98%20px;
+	width:98%;
+	height: 100%;
  }
  .contain .contain-item{
 	float: right;

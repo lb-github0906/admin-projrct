@@ -75,7 +75,7 @@ export default {
 
 <style lang="less" scoped>
   .contain-aside{
-    max-height: 704px;
+    height: 100%;
     overflow: scroll;
     min-height: calc(100vh - 40px);
   }
