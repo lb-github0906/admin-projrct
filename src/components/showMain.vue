@@ -10,7 +10,9 @@
 			<div class="border-b">
 				<net-charts></net-charts>
 			</div>
-			<div class="border-c"></div>
+			<div class="border-c">
+				<eachartsbingtu></eachartsbingtu>
+			</div>
 			<div class="border-d"></div>
 			<div class="border-e"></div>
 		</div>
@@ -20,8 +22,9 @@
 <script>
 import dataCharts from '../charts/dataCharts.vue'
 import NetCharts from '../page/netCharts.vue'
+import Eachartsbingtu from '../charts/eachartsbingtu.vue'
 export default {
-  components: { dataCharts, NetCharts },
+  components: { dataCharts, NetCharts, Eachartsbingtu },
     name:'sector',
     data() {
       return {
@@ -31,6 +34,8 @@ export default {
     },
     methods: {
 			showMsg() {
+				// 缓存
+				// window.sessionStorage.setItem('token', 'ssssdasdasdadasdasdasda')
 				this.$router.push('/showMessage')
 			}
 		},

@@ -6,6 +6,15 @@ import router from './router'
 import ElementUI from 'element-ui';
 import echarts from 'echarts'
 import 'element-ui/lib/theme-chalk/index.css';
+import '../src/assets/css.css'
+
+import axios from 'axios'
+
+axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.interceptors.request.use(config => {
+  console.log(config);
+  return config
+})
 
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
