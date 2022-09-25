@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import user from '@/components/user'
 import showMessage from '../page/showMessage'
 import welcome from '../page/welcome'
 
@@ -19,9 +20,10 @@ export default new Router({
       name: 'showMessage',
       component: showMessage,
       redirect: '/welcome',
-      children: [{
-          path: '/welcome', component: welcome
-        }]
+      children: [
+        {path: '/welcome', component: welcome},
+        {path: '/user', component: user}
+      ]
     }
   ]
 })

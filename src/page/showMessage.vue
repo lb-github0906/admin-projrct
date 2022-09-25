@@ -21,15 +21,15 @@
 				unique-opened
 				:collapse = "showToggle"
 				:collapse-transition="false"
-				:router="true">
+				:router="true"
+				:default-active="avtivePath">
 				<!-- 一级菜单 -->
 				<el-submenu :index="item.id" v-for="item in systemList" :key="item.id">
-					<template slot="title"> <i class="el-icon-location"></i> <span>一级菜单</span> </template>
-						<!-- <el-submenu index="1-4"> -->
-								<el-menu-item :index="subitem.path" v-for="subitem in item.children" :key="subitem.path">
-									<template slot="title"> <i class="el-icon-menu"></i> <span>一级菜单二层</span></template>
-								</el-menu-item>
-							<!-- </el-submenu> -->
+					<template slot="title"> <i class="el-icon-location"></i> <span>{{item.name}}</span> </template>
+					<!-- 二级菜单 -->
+							<el-menu-item :index="'/' + subitem.path" v-for="subitem in item.children" :key="subitem.path"  @click="saveNaState('/' + subitem.path)">
+								<template slot="title"> <i class="el-icon-menu"></i> <span>{{subitem.childName}}</span></template>
+							</el-menu-item>
 					</el-submenu>
 				</el-menu>
 			</el-aside>
@@ -47,38 +47,45 @@ export default {
 	data() {
 		return {
 			showToggle: false,
+			avtivePath: '',
 			systemList: [
 				{
 					id: '1',
+					name: '一层菜单',
 					children: [{
-						path: '1'
+						path: 'user',
+						childName: '用户列表'
 					}]
 				},
 				{
 					id: '2',
+					name: '二层菜单',
 					children: [{
-						path: '2'
+						path: '2',
+						childName: '子菜单2'
 					}]
 				},
 				{
 					id: '3',
+					name: '三层菜单',
 					children: [{
-						path: '3'
+						path: '3',
+						childName: '子菜单3'
 					}]
 				},
 			]
 		}
 	},
 	created() {
-		this.getessage()
+		this.avtivePath = window.sessionStorage.getItem('avtivePath')
 	},
 	methods: {
-		 async getessage() {
-			const result = await axios.get('menus')
-			console.log('result', result);
-		},
 		btnShow() {
 			this.showToggle = !this.showToggle
+		},
+		// 保存连接激活状态
+		saveNaState(avtivePath) {
+			window.sessionStorage.setItem('avtivePath', avtivePath)
 		},
 		back() {
 			// 清除缓存
