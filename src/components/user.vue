@@ -27,6 +27,7 @@
           <el-table-column label="邮箱" prop="email"></el-table-column>
           <el-table-column label="地址" prop="address"></el-table-column>
           <el-table-column label="日期" prop="date"></el-table-column>
+          <el-table-column label="手机" prop="Phone"></el-table-column>
           <el-table-column label="状态" prop="scope">
             <!-- 添加模板插槽来加switch按钮控件 -->
             <template slot-scope="scope">
@@ -34,16 +35,16 @@
               <el-switch v-model="scope.row.scope" @change="changeNew(scope.row)"></el-switch>
             </template>
           </el-table-column>
-          <el-table-column label="操作" prop="">
-            <template slot-scope="scope" width="180px">
-              <el-tooltip effect="dark" content="编辑" placement="top" :enterable="false">
-                <el-button type="danger" icon="el-icon-edit" circle size="mini"></el-button>
+          <el-table-column label="操作" width="180px">
+            <template slot-scope="scope">
+              <el-tooltip effect="dark" content="编辑" placement="top">
+                <el-button type="danger" icon="el-icon-edit" circle size="mini" @click="editClick(scope.row.id)"></el-button>
               </el-tooltip>
               <el-tooltip effect="dark" content="收藏" placement="top" :enterable="false">
                 <el-button type="warning" icon="el-icon-star-off" circle size="mini"></el-button>
               </el-tooltip>
               <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
-                <el-button type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+                <el-button @click="deleteClick(scope.row.id)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -64,33 +65,59 @@
         title="添加用户"
         :visible.sync="addDialogVisible"
         width="50%"
-        :before-close="handleClose">
+        :before-close="handleClose"
+        @close="addDialogClose">
         <!-- 内容显示 -->
-          <el-form :model="addForm" :rules="addrules" ref="ruleForm" label-width="70px">
+          <el-form :model="addForm" :rules="addrules" ref="ruleFormref" label-width="70px">
             <el-form-item label="用户名" prop="name">
               <el-input v-model="addForm.name"></el-input>
             </el-form-item>
-          </el-form>
-          <el-form :model="addForm" :rules="addrules" ref="ruleForm" label-width="70px">
             <el-form-item label="密码" prop="pasw">
               <el-input v-model="addForm.pasw"></el-input>
             </el-form-item>
-          </el-form>
-          <el-form :model="addForm" :rules="addrules" ref="ruleForm" label-width="70px">
             <el-form-item label="地址" prop="address">
               <el-input v-model="addForm.address"></el-input>
             </el-form-item>
-          </el-form>
-          <el-form :model="addForm" :rules="addrules" ref="ruleForm" label-width="70px">
             <el-form-item label="邮箱" prop="email">
               <el-input v-model="addForm.email"></el-input>
             </el-form-item>
+            <el-form-item label="手机" prop="Phone">
+              <el-input v-model="addForm.Phone"></el-input>
+            </el-form-item>
           </el-form>
-        <!-- 地步区域 -->
+        <!-- 底部区域 -->
         <span slot="footer" class="dialog-footer">
           <el-button @click="cancleTable">取 消</el-button>
-          <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+          <el-button type="primary" @click="suerClick">确 定</el-button>
         </span>
+    </el-dialog>
+    <!-- 修改用户对话框 -->
+    <el-dialog
+      title="修改用户"
+      :visible.sync="editVisible"
+      width="50%"
+      @close="closeEdit">
+      <el-form :model="editFrom" :rules="editRules" ref="editFormRef" label-width="70px">
+        <el-form-item label="用户名">
+          <el-input v-model="editFrom.name"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="pasw">
+          <el-input v-model="editFrom.pasw"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" prop="address">
+          <el-input v-model="editFrom.address"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="editFrom.email"></el-input>
+        </el-form-item>
+        <el-form-item label="手机" prop="Phone">
+          <el-input v-model="editFrom.Phone"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editVisible = false">取 消</el-button>
+        <el-button type="primary" @click="editClickBtn">确 定</el-button>
+      </span>
     </el-dialog>
 </div>
 </template>
@@ -99,6 +126,24 @@
 
 export default {
   data() {
+    // 验证邮箱规则
+    var checkEmial = (rule, value, callback) => {
+      const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+      if (reg.test(value)) {
+        return callback()
+      }
+      callback(new Error('请输入正确邮箱'))
+    }
+    // 校验手机号
+    var checkPhone = (rule, value, callback) => {
+      const regPhone = /^1([0-9])\d{9}$/
+      if (regPhone.test(value)) {
+        return callback()
+      } else {
+        callback(new Error('手机号码不正确'))
+      }
+      
+    }
     return {
       queryInfo: {
         query: '',
@@ -106,11 +151,33 @@ export default {
         pageSize: 2
       },
       total: 200,
+      editVisible: false,
       addForm: {
         name: '',
         pasw: '',
         address: '',
         email: '',
+        Phone: ''
+      },
+      editFrom: {},
+      // 编辑时校验规则
+      editRules: {
+        name:[
+          {required: true,message: '用户名', trigger: 'blur'},
+        ],
+        pasw:[
+          {required: true,message: '密码', trigger: 'blur'},
+          {min:6, max:20,message: '密码位数不对', trigger: 'bulr'}
+        ],
+        address:[
+          {required: true,message: '地址', trigger: 'blur'},
+        ],
+        Phone:[
+          {required: true,message: '手机', trigger: 'blur'},{validator:checkPhone, trigger: 'blur'}
+        ],
+        email:[
+          {required: true,message: '邮箱', trigger: 'blur'}, {validator:checkEmial, trigger: 'blur'}
+        ],
       },
       // 新增时校验规则
       addrules: {
@@ -124,8 +191,11 @@ export default {
         address:[
           {required: true,message: '地址', trigger: 'blur'},
         ],
+        Phone:[
+          {required: true,message: '手机', trigger: 'blur'},{validator:checkPhone, trigger: 'blur'}
+        ],
         email:[
-          {required: true,message: '邮箱', trigger: 'blur'},
+          {required: true,message: '邮箱', trigger: 'blur'}, {validator:checkEmial, trigger: 'blur'}
         ],
       },
       addDialogVisible: false,
@@ -134,6 +204,7 @@ export default {
             id:'1',
             name: '王小虎',
             email: '123456798',
+            Phone: '12345648537',
             scope: true,
             address: '上海市普陀区金沙江路 1518 弄'
           }, {
@@ -141,6 +212,7 @@ export default {
             name: '王小虎',
             id:'2',
             email: '123456798',
+            Phone: '12345648539',
             scope: false,
             address: '上海市普陀区金沙江路 1517 弄'
           }, {
@@ -148,11 +220,13 @@ export default {
             id:'3',
             name: '王小虎',
             email: '123456798',
+            Phone: '12345648531',
             scope: true,
             address: '上海市普陀区金沙江路 1519 弄'
           }, {
             date: '2016-05-03',
             email: '123456798',
+            Phone: '12345648532',
             id:'4',
             scope: true,
             name: '王小虎',
@@ -168,6 +242,10 @@ export default {
       // 获取完页面数量之后，重新请求接口即可加载新页面数据
       this.tableData
     },
+    // 监听关闭事件
+    addDialogClose() {
+      this.$refs.ruleFormref.resetFields()
+    },
     getList() {
       console.log('调用请求列表详情接口');
     },
@@ -176,8 +254,9 @@ export default {
       console.log(newPage);
       this.queryInfo.pagenum = newPage
     },
+    // 取消按钮
     handleClose() {
-      console.log('handleClose');
+      this.addDialogVisible = false
     },
     // 添加
     addUser() {
@@ -187,6 +266,66 @@ export default {
     cancleTable() {
       this.addDialogVisible = false
       this.addForm = {}
+    },
+    // 确定按钮
+    suerClick() {
+      console.log('this.$refs.ruleFormref', this.$refs.ruleFormref);
+      this.$refs.ruleFormref.validate(valid => {
+        console.log('valid', valid);
+        if (valid) {
+          this.addDialogVisible = false
+        } else {
+          this.$message.error('必填字段未填写！')
+        }
+      })
+    },
+    // 编辑事件
+    editClick(id) {
+      this.editVisible = true
+      let url ='https://www.fastmock.site/mock/5ded1ea9decd89deafbf22e995c7008d/editData'
+      this.axios.get(url + '/editInfo/:'+ id ).then(res => {
+        if (res.data && res.data.desc == '成功') {
+          this.editFrom = res.data.data.userInfo
+        } else {
+          return this.$message.error('查询失败！')
+        }
+      })
+    },
+    // 编辑事件取消
+    closeEdit() {
+      this.$refs.editFormRef.resetFields()
+    },
+    // 删除按钮事件
+    async deleteClick(id) {
+      const deletedResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$message({ type: 'success', message: '删除成功!' });
+        }).catch((err) => {
+          this.$message({ type: 'info', message: '已取消删除' });          
+        });
+        console.log('deletedResult', deletedResult);
+    },
+    // 编辑事件确定按钮
+    editClickBtn() {
+      this.$refs.editFormRef.validate(valid => {
+        if (!valid) return
+         let url = 'https://www.fastmock.site/mock/5ded1ea9decd89deafbf22e995c7008d/editData'
+         this.axios.put(url + '/edit/' + this.editFrom.id, {
+          Phone: this.editFrom.Phone,
+          email: this.editFrom.email,
+         })
+         .then(res => {
+          console.log('res', res);
+          if (res.data.data.desc == '成功') {
+            this.$message.success('提交成功')
+          }
+         })
+      })
+      this.editVisible = false
+
     },
     async changeNew(info) {
       console.log(info)
