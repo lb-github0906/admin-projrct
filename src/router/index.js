@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import power from '@/components/power/power'
+import Roles from '@/components/power/Roles'
 import user from '@/components/user'
 import showMessage from '../page/showMessage'
 import welcome from '../page/welcome'
@@ -22,7 +24,9 @@ export default new Router({
       redirect: '/welcome',
       children: [
         {path: '/welcome', component: welcome},
-        {path: '/user', component: user}
+        {path: '/user', component: user},
+        {path: '/power', component: power},
+        {path: '/Roles', component: Roles}
       ]
     }
   ]

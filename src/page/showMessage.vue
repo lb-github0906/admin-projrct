@@ -51,19 +51,26 @@ export default {
 			systemList: [
 				{
 					id: '1',
-					name: '一层菜单',
+					name: '用户管理',
 					children: [{
 						path: 'user',
 						childName: '用户列表'
-					}]
+					},
+				]
 				},
 				{
 					id: '2',
-					name: '二层菜单',
-					children: [{
-						path: '2',
-						childName: '子菜单2'
-					}]
+					name: '权限管理',
+					children: [
+					{
+						path: 'power',
+						childName: '角色列表'
+					},
+					{
+						path: 'Roles',
+						childName: '角色权限'
+					}
+					]
 				},
 				{
 					id: '3',
@@ -93,10 +100,8 @@ export default {
 			this.$router.go(-1)
 		},
 		handleOpen () {
-			console.log(1111)
 		},
 		handleClose () {
-			console.log(2222)
 		},
 	}
 }
