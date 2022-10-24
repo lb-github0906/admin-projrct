@@ -44,9 +44,9 @@
             </el-row>
           </template>
         </el-table-column>
-        <!-- 索引咧 -->
+        <!-- 索引列 -->
         <el-table-column type="index"></el-table-column>
-        <el-table-column label="角色名称" prop="roleName"></el-table-column>
+        <el-table-column label="角色名称" prop="authName"></el-table-column>
         <el-table-column label="角色描述" prop="roleDesc"></el-table-column>
         <el-table-column label="操作" width="300px">
           <template slot-scope="scope">

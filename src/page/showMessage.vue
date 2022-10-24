@@ -76,8 +76,8 @@ export default {
 					id: '3',
 					name: '三层菜单',
 					children: [{
-						path: '3',
-						childName: '子菜单3'
+						path: 'Cate',
+						childName: '商品分类'
 					}]
 				},
 			]

@@ -43,8 +43,8 @@
               <el-tooltip effect="dark" content="收藏" placement="top" :enterable="false">
                 <el-button type="warning" icon="el-icon-star-off" circle size="mini"></el-button>
               </el-tooltip>
-              <el-tooltip effect="dark" content="删除" placement="top" :enterable="false">
-                <el-button @click="deleteClick(scope.row.id)" type="danger" icon="el-icon-delete" circle size="mini"></el-button>
+              <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
+                <el-button @click="deleteClick(scope.row)" type="danger" icon="el-icon-s-tools" circle size="mini"></el-button>
               </el-tooltip>
             </template>
           </el-table-column>
@@ -119,6 +119,29 @@
         <el-button type="primary" @click="editClickBtn">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 添加权限对话框 -->
+    <el-dialog
+      title="分配角色"
+      :visible.sync="setRightVisible"
+      width="50%"
+      @close="setRolesDialogClosed">
+      <p>当前用户：{{userData.name}}</p>
+      <p>当前手机：{{userData.Phone}}</p>
+      <p>分配新角色：
+        <el-select v-model="selectedRoleId" placeholder="请选择">
+          <el-option
+            v-for="item in rolesList"
+            :key="item.id"
+            :label="item.authName"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </p>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRightVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveRolesAdd">确 定</el-button>
+      </span>
+    </el-dialog>
 </div>
 </template>
 
@@ -145,6 +168,7 @@ export default {
       
     }
     return {
+      setRightVisible: false,
       queryInfo: {
         query: '',
         pagenum: 1,
@@ -231,7 +255,10 @@ export default {
             scope: true,
             name: '王小虎',
             address: '上海市普陀区金沙江路 1516 弄'
-          }]
+          }],
+      userData: '',
+      rolesList: [],
+      selectedRoleId: ''
     }
   },
   methods: {
@@ -279,6 +306,13 @@ export default {
         }
       })
     },
+    //确定新增角色权限
+    saveRolesAdd() {
+      if (!this.selectedRoleId) {
+        return this.$message.warning('请选择权限人员')
+      }
+      this.setRightVisible = false
+    },
     // 编辑事件
     editClick(id) {
       this.editVisible = true
@@ -291,22 +325,27 @@ export default {
         }
       })
     },
+    // 监听角色分配关闭情况
+    setRolesDialogClosed() {
+      this.selectedRoleId = ''
+    },
     // 编辑事件取消
     closeEdit() {
       this.$refs.editFormRef.resetFields()
     },
-    // 删除按钮事件
-    async deleteClick(id) {
-      const deletedResult = await this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({ type: 'success', message: '删除成功!' });
-        }).catch((err) => {
-          this.$message({ type: 'info', message: '已取消删除' });          
-        });
-        console.log('deletedResult', deletedResult);
+    // 角色分配按钮事件
+    async deleteClick(role) {
+      this.userData = role
+
+      let url = 'https://www.fastmock.site/mock/5ded1ea9decd89deafbf22e995c7008d/editData'
+      const {data: res} = await this.axios.get(url + '/roles')
+      if (res.code !== '0000') {
+        return this.$message.error('请求数据失败！')
+      }
+      this.rolesList = res.data
+
+      this.setRightVisible = true
+      
     },
     // 编辑事件确定按钮
     editClickBtn() {

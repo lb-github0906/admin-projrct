@@ -7,6 +7,7 @@ import ElementUI from 'element-ui';
 import echarts from 'echarts'
 import 'element-ui/lib/theme-chalk/index.css';
 import '../src/assets/css.css'
+import TreeTable from 'vue-table-with-tree-grid'
 
 import axios from 'axios'
 
@@ -21,6 +22,7 @@ axios.interceptors.request.use(config => {
 Vue.config.productionTip = false
 Vue.prototype.$echarts = echarts
 Vue.use(ElementUI);
+Vue.component('tree-table', TreeTable)
 
 /* eslint-disable no-new */
 new Vue({
